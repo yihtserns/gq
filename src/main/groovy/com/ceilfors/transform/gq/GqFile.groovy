@@ -35,7 +35,7 @@ class GqFile implements CodeFlowListener {
     @PackageScope
     GqFile(Writer writer, boolean timestamp) {
         if (timestamp) {
-            writer = new TimestampPrintWriter(writer, Clock.systemUTC())
+            writer = new TimestampPrintWriter(writer, System.&currentTimeMillis)
         } else {
             writer = new PrintWriter(writer)
         }

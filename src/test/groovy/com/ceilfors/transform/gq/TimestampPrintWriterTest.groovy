@@ -19,30 +19,22 @@ package com.ceilfors.transform.gq
 import spock.lang.Specification
 import spock.lang.Unroll
 
-import java.time.Clock
-import java.time.Instant
 /**
  * @author ceilfors
  */
 class TimestampPrintWriterTest extends Specification {
 
-
-    Clock clock
     StringWriter writer
 
     def setup() {
-        clock = Mock(Clock)
         writer = new StringWriter()
     }
 
     @Unroll
     def "Should add the timestamp #result as a prefix to the printed String"(long milli, String result) {
         setup:
-        clock.instant() >>> [
-                Instant.ofEpochMilli(0),
-                Instant.ofEpochMilli(milli)
-        ]
-        def printer = new TimestampPrintWriter(writer, clock)
+        def now = [0, milli].iterator().&next
+        def printer = new TimestampPrintWriter(writer, now)
 
         when:
         printer.print("foo")
@@ -62,11 +54,8 @@ class TimestampPrintWriterTest extends Specification {
 
     def "Should indent new lines and not add timestamp to the new lines from parameters"() {
         setup:
-        clock.instant() >>> [
-                Instant.ofEpochMilli(0),
-                Instant.ofEpochMilli(100000)
-        ]
-        def printer = new TimestampPrintWriter(writer, clock)
+        def now = [0, 100000].iterator().&next
+        def printer = new TimestampPrintWriter(writer, now)
 
         when:
         printer.print("foo\nbar\nboo")
@@ -80,8 +69,8 @@ class TimestampPrintWriterTest extends Specification {
 
     def "Should add timestamp on new line"() {
         setup:
-        clock.instant() >> Instant.ofEpochMilli(0)
-        def printer = new TimestampPrintWriter(writer, clock)
+        def now = { -> 0 }
+        def printer = new TimestampPrintWriter(writer, now)
 
         when:
         printer.println("foo")
@@ -98,8 +87,8 @@ class TimestampPrintWriterTest extends Specification {
 
     def "Should not add a timestamp if there is no newline"() {
         setup:
-        clock.instant() >> Instant.ofEpochMilli(0)
-        def printer = new TimestampPrintWriter(writer, clock)
+        def now = { -> 0 }
+        def printer = new TimestampPrintWriter(writer, now)
 
         when:
         printer.print('foo')

@@ -16,7 +16,7 @@
 
 package com.ceilfors.transform.gq
 
-import java.time.Clock
+import java.util.concurrent.Callable
 
 /**
  * @author ceilfors
@@ -25,16 +25,16 @@ class TimestampPrintWriter extends PrintWriter {
 
     boolean newLine = true
     private long startMilli
-    private Clock clock
+    private Callable<Long> now
 
     private long currentElapsedMilli() {
-        return clock.instant().toEpochMilli() - startMilli
+        return now() - startMilli
     }
 
-    TimestampPrintWriter(Writer out, Clock clock) {
+    TimestampPrintWriter(Writer out, Callable<Long> now) {
         super(out)
-        this.clock = clock
-        this.startMilli = clock.instant().toEpochMilli()
+        this.now = now
+        this.startMilli = now()
     }
 
     @Override
