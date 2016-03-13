@@ -29,4 +29,8 @@ dependencies {
     testCompile 'junit:junit:4.12'
 }
 
+test {
+    systemProperty 'line.separator', '\n'
+}
+
 build.dependsOn install

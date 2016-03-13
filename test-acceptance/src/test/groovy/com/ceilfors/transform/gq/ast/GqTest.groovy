@@ -80,7 +80,7 @@ class GqTest extends BaseSpecification {
         instance."return void"()
 
         then:
-        gqFile.text == ("return void()\n".denormalize())
+        gqFile.text == ("return void()\n")
     }
 
     def "Should write nested method call with indentation"() {
@@ -101,7 +101,7 @@ class GqTest extends BaseSpecification {
                   |  nested3()
                   |  -> 5
                   |-> 15
-                  |""".stripMargin().denormalize()
+                  |""".stripMargin()
     }
 
     def "Should write exception details if an exception is thrown"() {
@@ -117,7 +117,7 @@ class GqTest extends BaseSpecification {
         gqFile.text ==
                 """throwException()
                   |!> RuntimeException('Hello!') at GqExample.groovy:26
-                  |""".stripMargin().denormalize()
+                  |""".stripMargin()
     }
 
     def "Should write exception details if an exception is thrown from a nested method"() {
@@ -137,7 +137,7 @@ class GqTest extends BaseSpecification {
                   |    !> RuntimeException('Hello!') at GqExample.groovy:43
                   |  !> RuntimeException('Hello!') at GqExample.groovy:37
                   |!> RuntimeException('Hello!') at GqExample.groovy:31
-                  |""".stripMargin().denormalize()
+                  |""".stripMargin()
     }
 
     def "Should restore indentation when an exception is thrown"() {
@@ -158,7 +158,7 @@ class GqTest extends BaseSpecification {
         gqFile.text.endsWith(
                 """throwException()
                   |!> RuntimeException('Hello!') at GqExample.groovy:26
-                  |""".stripMargin().denormalize())
+                  |""".stripMargin())
     }
 
     def "Should be able to be used in standalone Groovy script"() {
@@ -177,6 +177,6 @@ class GqTest extends BaseSpecification {
         gqFile.text ==
                 """simplyReturn(5)
                   |-> 5
-                  |""".stripMargin().denormalize()
+                  |""".stripMargin()
     }
 }

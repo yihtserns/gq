@@ -38,13 +38,13 @@ class GqFileTest extends Specification {
         gqFile.println("one")
 
         then:
-        file.text == "one\n".denormalize()
+        file.text == "one\n"
 
         when:
         file.delete()
         gqFile.println("two")
 
         then:
-        file.text == "two\n".denormalize()
+        file.text == "two\n"
     }
 }

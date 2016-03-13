@@ -23,6 +23,8 @@ tasks.withType(Test) {
 }
 
 test {
+    systemProperty 'line.separator', '\n'
+
     systemProperty 'gqVersion', version
     systemProperty 'gqGroup', rootProject.group
     systemProperty 'gqName', rootProject.name

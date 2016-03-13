@@ -75,7 +75,7 @@ class TimestampPrintWriterTest extends Specification {
         writer.toString() ==
                 """100.0s foo
                   |       bar
-                  |       boo""".stripMargin().denormalize()
+                  |       boo""".stripMargin()
     }
 
     def "Should add timestamp on new line"() {
@@ -93,7 +93,7 @@ class TimestampPrintWriterTest extends Specification {
         writer.toString() ==
                 """ 0.0s foo
                   | 0.0s bar
-                  | 0.0s boo""".stripMargin().denormalize()
+                  | 0.0s boo""".stripMargin()
     }
 
     def "Should not add a timestamp if there is no newline"() {

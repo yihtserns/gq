@@ -33,7 +33,7 @@ class GqSupportTest extends BaseSpecification {
 
         then:
         result == 8
-        gqFile.text == ("3 plus 5: 3 + 5=8\n".denormalize())
+        gqFile.text == ("3 plus 5: 3 + 5=8\n")
     }
 
     def "Should convert multi line variable expression to one line"() {
@@ -51,7 +51,7 @@ class GqSupportTest extends BaseSpecification {
 
         then:
         result == 6
-        gqFile.text == ("test: 1 +         2 +         3=6\n".denormalize())
+        gqFile.text == ("test: 1 +         2 +         3=6\n")
     }
 
     def "Should convert multi line method call expression to one line"() {
@@ -69,7 +69,7 @@ class GqSupportTest extends BaseSpecification {
 
         then:
         result == 6
-        gqFile.text == ("sum: one +         two +         three=6\n".denormalize())
+        gqFile.text == ("sum: one +         two +         three=6\n")
     }
 
     def "Should write method call expression statement and the evaluated expression"() {
@@ -84,7 +84,7 @@ class GqSupportTest extends BaseSpecification {
 
         then:
         result == 5
-        gqFile.text == ("nested1: nested2(value)=5\n".denormalize())
+        gqFile.text == ("nested1: nested2(value)=5\n")
     }
 
     def "Should write method call expression statement with multiple arguments in order"() {
@@ -101,7 +101,7 @@ class GqSupportTest extends BaseSpecification {
 
         then:
         result == 6
-        gqFile.text == ("sum: one=1, two=2, three=3\n".denormalize())
+        gqFile.text == ("sum: one=1, two=2, three=3\n")
     }
 
     def "Should be able to be used in standalone Groovy script"() {
@@ -116,7 +116,7 @@ class GqSupportTest extends BaseSpecification {
         then:
         gqFile.text ==
                 """run: 1 + 1=2
-                  |""".stripMargin().denormalize()
+                  |""".stripMargin()
     }
 
     def "Should be able to gracefully accept void method call expression"() {
@@ -132,6 +132,6 @@ class GqSupportTest extends BaseSpecification {
         then:
         gqFile.text ==
                 """run: nothing(5)=null
-                  |""".stripMargin().denormalize()
+                  |""".stripMargin()
     }
 }
