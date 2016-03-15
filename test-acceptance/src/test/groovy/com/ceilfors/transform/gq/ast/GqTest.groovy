@@ -207,4 +207,49 @@ class GqTest extends BaseSpecification {
         returnLine.matches()
         new File(returnLine.group(2)).text == "0" * 100
     }
+
+    def "Should be able to use CALL operation"() {
+        setup:
+        def instance = toInstance(insertPackageAndImport("""
+            def val = 1
+
+            assert Gq(val + 2) == 3
+        """))
+
+        when:
+        instance.main()
+
+        then:
+        fileContentEquals gqFile, "run: val + 2=3\n"
+    }
+
+    def "Should be able to use OR operator"() {
+        setup:
+        def instance = toInstance(insertPackageAndImport("""
+            def val = 1
+
+            assert (Gq|val + 2) == 3
+        """))
+
+        when:
+        instance.main()
+
+        then:
+        fileContentEquals gqFile, "run: val + 2=3\n"
+    }
+
+    def "Should be able to use DIV operator"() {
+        setup:
+        def instance = toInstance(insertPackageAndImport("""
+            def val = 1
+
+            assert Gq/val + 2 == 3
+        """))
+
+        when:
+        instance.main()
+
+        then:
+        fileContentEquals gqFile, "run: val=1\n"
+    }
 }

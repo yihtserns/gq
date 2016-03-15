@@ -25,6 +25,7 @@ import org.codehaus.groovy.ast.ClassHelper
 import org.codehaus.groovy.ast.ClassNode
 import org.codehaus.groovy.ast.MethodNode
 import org.codehaus.groovy.ast.expr.ArgumentListExpression
+import org.codehaus.groovy.ast.expr.BinaryExpression
 import org.codehaus.groovy.ast.expr.ConstructorCallExpression
 import org.codehaus.groovy.ast.expr.Expression
 import org.codehaus.groovy.ast.expr.MethodCallExpression
@@ -45,6 +46,8 @@ import static org.codehaus.groovy.ast.tools.GeneralUtils.propX
  */
 @GroovyASTTransformation(phase = CompilePhase.SEMANTIC_ANALYSIS)
 class GqSupportTransformation implements ASTTransformation {
+
+    private static final ClassNode GQ_TYPE = ClassHelper.make(Gq)
 
     @Override
     void visit(ASTNode[] astNodes, SourceUnit sourceUnit) {
@@ -72,6 +75,26 @@ class GqSupportTransformation implements ASTTransformation {
                         newExpressionInfo(getSourceUnit(), it)
                     })
                 }
+                if (expression instanceof MethodCallExpression
+                        && expression.methodAsString == 'Gq') { // Gq(...)
+                    Expression actualOperation = expression.arguments.getExpression(0)
+                    String text = actualOperation.text
+                    text = text.substring(1, text.length() - 1) // Remove method parenthesis
+
+                    return callExpressionProcessed(currentMethodName, newExpressionInfo(actualOperation, text))
+                }
+                if (expression instanceof BinaryExpression
+                        && expression.leftExpression.type == GQ_TYPE
+                        && expression.operation.text in ['/', '|']) { // Gq/ or Gq|
+                    Expression actualOperation = expression.rightExpression
+                    String text = actualOperation.text
+                    if (expression.operation.text == '|') {
+                        // Text for OR operation is somehow surrounded by parenthesis
+                        text = text.substring(1, text.length() - 1)
+                    }
+
+                    return callExpressionProcessed(currentMethodName, newExpressionInfo(actualOperation, text))
+                }
                 return super.transform(expression)
             }
         }
@@ -93,6 +116,10 @@ class GqSupportTransformation implements ASTTransformation {
 
     private static ConstructorCallExpression newExpressionInfo(SourceUnit sourceUnit, Expression x) {
         def text = lookup(sourceUnit, x)
+        return newExpressionInfo(x, text)
+    }
+
+    private static ConstructorCallExpression newExpressionInfo(Expression x, String text) {
         new ConstructorCallExpression(ClassHelper.make(ExpressionInfo), args(constX(text), x))
     }
 
