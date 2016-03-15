@@ -25,7 +25,7 @@ class GqTest extends BaseSpecification {
     def "Should write the name of a method with empty parameter"() {
         setup:
         def instance = toInstance(wrapMethodInClass("""
-            @Gq
+            @q
             int "return 5"() {
                 5
             }
@@ -42,7 +42,7 @@ class GqTest extends BaseSpecification {
     def "Should write the returned value of a method call"() {
         setup:
         def instance = toInstance(wrapMethodInClass("""
-            @Gq
+            @q
             int "return 5"() {
                 5
             }
@@ -59,7 +59,7 @@ class GqTest extends BaseSpecification {
     def "Should write the arguments of a method call"() {
         setup:
         def instance = toInstance(wrapMethodInClass("""
-            @Gq
+            @q
             int add(int x, int y) {
                 return x + y
             }
@@ -76,7 +76,7 @@ class GqTest extends BaseSpecification {
     def "Should be able to write a method when its return type is void"() {
         setup:
         def instance = toInstance(wrapMethodInClass("""
-            @Gq
+            @q
             void "return void"() {}
         """))
 
@@ -90,9 +90,9 @@ class GqTest extends BaseSpecification {
     def "Should write nested method call with indentation"() {
         setup:
         def instance = toInstance(wrapMethodInClass("""
-            @Gq int nested()          { nested2() + 5 }
+            @q int nested()          { nested2() + 5 }
                 private int nested2() { nested3() + 5 }
-            @Gq private int nested3() { 5 }
+            @q private int nested3() { 5 }
         """))
 
         when:
@@ -169,7 +169,7 @@ class GqTest extends BaseSpecification {
     def "Should be able to be used in standalone Groovy script"() {
         setup:
         def instance = toInstance(insertPackageAndImport("""
-            @Gq
+            @q
             def simplyReturn(arg) { arg }
 
             simplyReturn(5)
@@ -189,7 +189,7 @@ class GqTest extends BaseSpecification {
     def "Should save long expression value to a separated file"() {
         setup:
         def instance = toInstance(wrapMethodInClass("""
-            @Gq
+            @q
             int simplyReturn(arg) {
                 return arg
             }
@@ -213,7 +213,7 @@ class GqTest extends BaseSpecification {
         def instance = toInstance(insertPackageAndImport("""
             def val = 1
 
-            assert Gq(val + 2) == 3
+            assert q(val + 2) == 3
         """))
 
         when:
@@ -228,7 +228,7 @@ class GqTest extends BaseSpecification {
         def instance = toInstance(insertPackageAndImport("""
             def val = 1
 
-            assert (Gq|val + 2) == 3
+            assert (q|val + 2) == 3
         """))
 
         when:
@@ -243,7 +243,7 @@ class GqTest extends BaseSpecification {
         def instance = toInstance(insertPackageAndImport("""
             def val = 1
 
-            assert Gq/val + 2 == 3
+            assert q/val + 2 == 3
         """))
 
         when:

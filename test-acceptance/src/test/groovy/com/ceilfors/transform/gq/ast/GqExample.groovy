@@ -21,23 +21,23 @@ package com.ceilfors.transform.gq.ast
  */
 class GqExample {
 
-    @Gq
+    @q
     int throwException() {
         throw new RuntimeException("Hello!")
     }
 
-    @Gq
+    @q
     int nestedThrowException1() {
         nestedThrowException2()
     }
 
-    @Gq
+    @q
     private int nestedThrowException2() {
         // some comment
         nestedThrowException3()
     }
 
-    @Gq
+    @q
     private int nestedThrowException3() {
         // some comment
         { ->

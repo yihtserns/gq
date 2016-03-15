@@ -28,7 +28,7 @@ class GqSupportTest extends BaseSpecification {
         setup:
         def instance = toInstance(wrapMethodInClass("""
             int "3 plus 5"() {
-                gq(3 + 5)
+                q(3 + 5)
             }
         """))
 
@@ -44,7 +44,7 @@ class GqSupportTest extends BaseSpecification {
         setup:
         def instance = toInstance(wrapMethodInClass(
                 """int test() {
-                  |    return gq(1 +
+                  |    return q(1 +
                   |         2 +
                   |         3)
             }
@@ -62,7 +62,7 @@ class GqSupportTest extends BaseSpecification {
         setup:
         def instance = toInstance(wrapMethodInClass(
                 """int sum(one, two, three) {
-                  |    return gq(one +
+                  |    return q(one +
                   |         two +
                   |         three)
             }
@@ -79,7 +79,7 @@ class GqSupportTest extends BaseSpecification {
     def "Should write method call expression statement and the evaluated expression"() {
         setup:
         def instance = toInstance(wrapMethodInClass("""
-            int nested1(int value) { gq(nested2(value)) }
+            int nested1(int value) { q(nested2(value)) }
             int nested2(int value) { return value }
         """))
 
@@ -95,7 +95,7 @@ class GqSupportTest extends BaseSpecification {
         setup:
         def instance = toInstance(wrapMethodInClass("""
             int sum(one, two, three) {
-                gq(one, two, three)
+                q(one, two, three)
                 return one + two + three
             }
         """))
@@ -111,7 +111,7 @@ class GqSupportTest extends BaseSpecification {
     def "Should be able to be used in standalone Groovy script"() {
         setup:
         def instance = toInstance(insertPackageAndImport("""
-            gq(1 + 1)
+            q(1 + 1)
         """))
 
         when:
@@ -127,7 +127,7 @@ class GqSupportTest extends BaseSpecification {
         setup:
         def instance = toInstance(insertPackageAndImport("""
             void nothing(args) {}
-            gq(nothing(5))
+            q(nothing(5))
         """))
 
         when:

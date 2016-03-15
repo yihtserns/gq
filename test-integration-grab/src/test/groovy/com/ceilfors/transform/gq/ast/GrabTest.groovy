@@ -41,13 +41,11 @@ class GrabTest {
 
         def test = new GroovyClassLoader().parseClass("""
 
-            import static com.ceilfors.transform.gq.GqSupport.gq
-
             @Grab(group='${artifactGroup}', module='${artifactModule}', version='${artifactVersion}')
             class GrabTest {
 
                 int highFive() {
-                    return gq(2 + 3)
+                    return q(2 + 3)
                 }
             }
         """).newInstance()

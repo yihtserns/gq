@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.ceilfors.transform.gq.ast
+package groovy.lang
 
 import com.github.yihtserns.groovy.decorator.MethodDecorator
 import org.codehaus.groovy.transform.GroovyASTTransformationClass
@@ -58,6 +58,6 @@ import java.lang.annotation.Target
 @GroovyASTTransformationClass ("com.github.yihtserns.groovy.decorator.DecoratorASTTransformation")
 @Retention (RetentionPolicy.SOURCE)
 @Target ([ElementType.METHOD])
-public @interface Gq {
+public @interface q {
 
 }

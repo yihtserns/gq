@@ -16,8 +16,8 @@
 
 package com.ceilfors.transform.gq.ast
 
+import groovy.lang.q
 import com.ceilfors.transform.gq.ExpressionInfo
-import com.ceilfors.transform.gq.GqSupport
 import com.ceilfors.transform.gq.SingletonCodeFlowManager
 import org.codehaus.groovy.ast.ASTNode
 import org.codehaus.groovy.ast.ClassCodeExpressionTransformer
@@ -47,8 +47,6 @@ import static org.codehaus.groovy.ast.tools.GeneralUtils.propX
 @GroovyASTTransformation(phase = CompilePhase.SEMANTIC_ANALYSIS)
 class GqSupportTransformation implements ASTTransformation {
 
-    private static final ClassNode GQ_TYPE = ClassHelper.make(Gq)
-
     @Override
     void visit(ASTNode[] astNodes, SourceUnit sourceUnit) {
         def transformer = new ClassCodeExpressionTransformer() {
@@ -68,24 +66,17 @@ class GqSupportTransformation implements ASTTransformation {
 
             @Override
             Expression transform(Expression expression) {
-                if (expression instanceof StaticMethodCallExpression && expression.ownerType.name == GqSupport.name) {
-                    // Traps normal method call to GqSupport and reroute to CodeFlowListeners
+                if (expression instanceof MethodCallExpression
+                        && expression.methodAsString == 'q') { // q(...)
                     def originalArgs = (expression.arguments as ArgumentListExpression).expressions
+
                     return callExpressionProcessed(currentMethodName, *originalArgs.collect {
                         newExpressionInfo(getSourceUnit(), it)
                     })
                 }
-                if (expression instanceof MethodCallExpression
-                        && expression.methodAsString == 'Gq') { // Gq(...)
-                    Expression actualOperation = expression.arguments.getExpression(0)
-                    String text = actualOperation.text
-                    text = text.substring(1, text.length() - 1) // Remove method parenthesis
-
-                    return callExpressionProcessed(currentMethodName, newExpressionInfo(actualOperation, text))
-                }
                 if (expression instanceof BinaryExpression
-                        && expression.leftExpression.type == GQ_TYPE
-                        && expression.operation.text in ['/', '|']) { // Gq/ or Gq|
+                        && expression.leftExpression.text == 'q'
+                        && expression.operation.text in ['/', '|']) { // q/ or q|
                     Expression actualOperation = expression.rightExpression
                     String text = actualOperation.text
                     if (expression.operation.text == '|') {

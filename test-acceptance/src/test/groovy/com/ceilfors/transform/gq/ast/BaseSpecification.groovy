@@ -71,8 +71,6 @@ class BaseSpecification extends Specification {
     static insertPackageAndImport(String text) {
         return """package com.ceilfors.transform.gq.ast
                  |
-                 |import static com.ceilfors.transform.gq.GqSupport.gq
-                 |
                  |$text""".stripMargin()
     }
 }
