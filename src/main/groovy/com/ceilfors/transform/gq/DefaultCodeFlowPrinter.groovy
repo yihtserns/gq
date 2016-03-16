@@ -19,11 +19,11 @@ package com.ceilfors.transform.gq
 /**
  * @author ceilfors
  */
-class SyntaxConvertingCodeFlowPrinter implements CodeFlowPrinter {
+class DefaultCodeFlowPrinter implements CodeFlowPrinter {
 
     private PrintWriter out
 
-    SyntaxConvertingCodeFlowPrinter(PrintWriter writer) {
+    DefaultCodeFlowPrinter(PrintWriter writer) {
         this.out = writer
     }
 

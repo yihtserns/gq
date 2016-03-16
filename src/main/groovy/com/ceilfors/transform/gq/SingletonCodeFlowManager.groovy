@@ -32,7 +32,7 @@ enum SingletonCodeFlowManager implements CodeFlowListener {
 
     def setGqFile(File file, boolean timestamp) {
         codeFlowPrinter = new IndentingCodeFlowPrinter(
-            new SyntaxConvertingCodeFlowPrinter(
+            new DefaultCodeFlowPrinter(
                 new SimpleSyntaxConverter(
                     new FileCreatingWriter(file))))
         if (timestamp) {
