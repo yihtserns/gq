@@ -35,6 +35,15 @@ class BaseSpecification extends Specification {
         SingletonCodeFlowManager.INSTANCE.setGqFile(gqFile, false)
     }
 
+    boolean clearFile() {
+        SingletonCodeFlowManager.INSTANCE.fileWriter.close()
+        try {
+            return gqFile.delete()
+        } finally {
+            SingletonCodeFlowManager.INSTANCE.setGqFile(gqFile, false)
+        }
+    }
+
     /**
      * Only use this method when it is absolutely necessary. Using this method for test case
      * will drop test readability. Example of good use case: comparing line numbers

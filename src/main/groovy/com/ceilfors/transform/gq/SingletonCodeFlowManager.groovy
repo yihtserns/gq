@@ -24,6 +24,7 @@ enum SingletonCodeFlowManager implements CodeFlowListener {
     INSTANCE;
 
     private CodeFlowPrinter codeFlowPrinter
+    private FileWriter fileWriter
 
     private File createGqFile() {
         // By default using "/tmp" instead of using java.io.tmpdir for better user usability
@@ -31,10 +32,11 @@ enum SingletonCodeFlowManager implements CodeFlowListener {
     }
 
     def setGqFile(File file, boolean timestamp) {
-        codeFlowPrinter = new IndentingCodeFlowPrinter(
-            new DefaultCodeFlowPrinter(
-                new PrintWriter(
-                    new FileCreatingWriter(file))))
+        fileWriter?.close()
+        fileWriter = new FileWriter(file, true)
+
+        codeFlowPrinter = new IndentingCodeFlowPrinter(new DefaultCodeFlowPrinter(new PrintWriter(fileWriter)))
+
         if (timestamp) {
             codeFlowPrinter = new TimestampCodeFlowPrinter(codeFlowPrinter, System.&currentTimeMillis)
         }
@@ -42,6 +44,9 @@ enum SingletonCodeFlowManager implements CodeFlowListener {
 
     {
         setGqFile(createGqFile(), true)
+        addShutdownHook {
+            fileWriter.close()
+        }
     }
 
     @Override

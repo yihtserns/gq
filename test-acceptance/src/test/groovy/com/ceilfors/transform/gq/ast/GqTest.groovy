@@ -153,7 +153,7 @@ class GqTest extends BaseSpecification {
 
         then:
         thrown(RuntimeException)
-        gqFile.delete()
+        clearFile()
 
         when:
         example.throwException()
