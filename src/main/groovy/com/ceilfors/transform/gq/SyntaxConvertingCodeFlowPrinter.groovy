@@ -22,11 +22,9 @@ package com.ceilfors.transform.gq
 class SyntaxConvertingCodeFlowPrinter implements CodeFlowPrinter {
 
     private PrintWriter out
-    private SyntaxConverter syntaxConverter
 
-    SyntaxConvertingCodeFlowPrinter(SyntaxConverter syntaxConverter, PrintWriter writer) {
+    SyntaxConvertingCodeFlowPrinter(PrintWriter writer) {
         this.out = writer
-        this.syntaxConverter = syntaxConverter
     }
 
     @Override
@@ -37,7 +35,7 @@ class SyntaxConvertingCodeFlowPrinter implements CodeFlowPrinter {
             if (i != 0) {
                 out.print(', ')
             }
-            out.print(syntaxConverter.convertExpressionValue(arg))
+            out.print(arg)
         }
         out.println(')')
     }
@@ -49,13 +47,13 @@ class SyntaxConvertingCodeFlowPrinter implements CodeFlowPrinter {
     @Override
     void printMethodEnd(Object result) {
         out.print('-> ')
-        out.println(syntaxConverter.convertExpressionValue(result))
+        out.println(result)
     }
 
     @Override
     void printExpression(ExpressionInfo expressionInfo) {
         out.print("${expressionInfo.methodName}: ${expressionInfo.text.replace("\n", "")}=")
-        out.print(syntaxConverter.convertExpressionValue(expressionInfo.value))
+        out.print(expressionInfo.value)
         out.println()
     }
 

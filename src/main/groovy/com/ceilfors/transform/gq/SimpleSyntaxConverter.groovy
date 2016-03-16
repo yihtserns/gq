@@ -19,14 +19,18 @@ package com.ceilfors.transform.gq
 /**
  * @author ceilfors
  */
-class SimpleSyntaxConverter implements SyntaxConverter {
+class SimpleSyntaxConverter extends PrintWriter {
+
+    SimpleSyntaxConverter(Writer out) {
+        super(out)
+    }
 
     @Override
-    Object convertExpressionValue(Object expression) {
+    void print(Object expression) {
         if (expression instanceof String) {
-            return "'$expression'"
+            print((String) "'$expression'")
         } else {
-            return expression
+            super.print(expression)
         }
     }
 }
