@@ -19,9 +19,9 @@ package com.ceilfors.transform.gq
 /**
  * @author ceilfors
  */
-class SimpleSyntaxConverter extends PrintWriter {
+class SyntaxConvertingPrintWriter extends PrintWriter {
 
-    SimpleSyntaxConverter(Writer out) {
+    SyntaxConvertingPrintWriter(Writer out) {
         super(out)
     }
 
