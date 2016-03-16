@@ -35,7 +35,7 @@ class DefaultCodeFlowPrinter implements CodeFlowPrinter {
             if (i != 0) {
                 out.print(', ')
             }
-            out.print(arg)
+            out.print(convertIfNecessary(arg))
         }
         out.println(')')
     }
@@ -47,13 +47,13 @@ class DefaultCodeFlowPrinter implements CodeFlowPrinter {
     @Override
     void printMethodEnd(Object result) {
         out.print('-> ')
-        out.println(result)
+        out.println(convertIfNecessary(result))
     }
 
     @Override
     void printExpression(ExpressionInfo expressionInfo) {
         out.print("${expressionInfo.methodName}: ${expressionInfo.text.replace("\n", "")}=")
-        out.print(expressionInfo.value)
+        out.print(convertIfNecessary(expressionInfo.value))
         out.println()
     }
 
@@ -69,5 +69,12 @@ class DefaultCodeFlowPrinter implements CodeFlowPrinter {
         def trace = exception.stackTrace.find { it.methodName == decoratedMethodName }
 
         out.println("!> ${exception.class.simpleName}('${exception.message}') at ${trace.fileName}:${trace.lineNumber}")
+    }
+
+    private static Object convertIfNecessary(Object expression) {
+        if (expression instanceof String) {
+            return "'$expression'"
+        }
+        return expression
     }
 }
