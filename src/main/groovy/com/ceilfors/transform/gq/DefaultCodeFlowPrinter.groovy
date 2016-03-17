@@ -29,9 +29,7 @@ class DefaultCodeFlowPrinter implements CodeFlowPrinter {
 
     @Override
     void printMethodStart(MethodInfo methodInfo) {
-        methodInfo.printTo(this)
-        out.println()
-        out.flush()
+        printPrintable(methodInfo)
     }
 
     @Override
@@ -40,24 +38,20 @@ class DefaultCodeFlowPrinter implements CodeFlowPrinter {
 
     @Override
     void printMethodEnd(Object result) {
-        print('-> ')
-        printValue(result)
-        out.println()
-        out.flush()
+        printPrintable({ printer ->
+            printer.print('-> ')
+            printer.printValue(result)
+        })
     }
 
     @Override
     void printExpression(ExpressionInfo expressionInfo) {
-        expressionInfo.printTo(this)
-        out.println()
-        out.flush()
+        printPrintable(expressionInfo)
     }
 
     @Override
     void printException(ExceptionInfo exceptionInfo) {
-        exceptionInfo.printTo(this)
-        out.println()
-        out.flush()
+        printPrintable(exceptionInfo)
     }
 
     @Override
@@ -71,5 +65,11 @@ class DefaultCodeFlowPrinter implements CodeFlowPrinter {
             value = "'$value'"
         }
         out.print(value)
+    }
+
+    private void printPrintable(Printable printable) {
+        printable.printTo(this)
+        out.println()
+        out.flush()
     }
 }
