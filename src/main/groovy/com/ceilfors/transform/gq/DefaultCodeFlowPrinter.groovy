@@ -29,15 +29,8 @@ class DefaultCodeFlowPrinter implements CodeFlowPrinter {
 
     @Override
     void printMethodStart(MethodInfo methodInfo) {
-        out.print("${methodInfo.name}")
-        out.print('(')
-        methodInfo.args.eachWithIndex { Object arg, i ->
-            if (i != 0) {
-                out.print(', ')
-            }
-            out.print(convertIfNecessary(arg))
-        }
-        out.println(')')
+        methodInfo.printTo(this)
+        out.println()
         out.flush()
     }
 
@@ -47,15 +40,22 @@ class DefaultCodeFlowPrinter implements CodeFlowPrinter {
 
     @Override
     void printMethodEnd(Object result) {
-        out.print('-> ')
-        out.println(convertIfNecessary(result))
+        print('-> ')
+        printValue(result)
+        out.println()
         out.flush()
     }
 
     @Override
     void printExpression(ExpressionInfo expressionInfo) {
-        out.print("${expressionInfo.methodName}: ${expressionInfo.text.replace("\n", "")}=")
-        out.print(convertIfNecessary(expressionInfo.value))
+        expressionInfo.printTo(this)
+        out.println()
+        out.flush()
+    }
+
+    @Override
+    void printException(ExceptionInfo exceptionInfo) {
+        exceptionInfo.printTo(this)
         out.println()
         out.flush()
     }
@@ -63,23 +63,13 @@ class DefaultCodeFlowPrinter implements CodeFlowPrinter {
     @Override
     void print(String string) {
         out.print(string)
-        out.flush()
     }
 
     @Override
-    void printException(ExceptionInfo exceptionInfo) {
-        Throwable exception = exceptionInfo.exception
-        String decoratedMethodName = 'decorated$' + exceptionInfo.methodName
-        def trace = exception.stackTrace.find { it.methodName == decoratedMethodName }
-
-        out.println("!> ${exception.class.simpleName}('${exception.message}') at ${trace.fileName}:${trace.lineNumber}")
-        out.flush()
-    }
-
-    private static Object convertIfNecessary(Object expression) {
-        if (expression instanceof String) {
-            return "'$expression'"
+    void printValue(Object value) {
+        if (value instanceof String) {
+            value = "'$value'"
         }
-        return expression
+        out.print(value)
     }
 }

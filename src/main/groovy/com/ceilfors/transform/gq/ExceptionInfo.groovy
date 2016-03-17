@@ -19,7 +19,7 @@ package com.ceilfors.transform.gq
 /**
  * @author ceilfors
  */
-class ExceptionInfo {
+class ExceptionInfo implements Printable {
 
     String methodName
     Throwable exception
@@ -27,5 +27,13 @@ class ExceptionInfo {
     ExceptionInfo(String methodName, Throwable exception) {
         this.methodName = methodName
         this.exception = exception
+    }
+
+    @Override
+    void printTo(CodeFlowPrinter printer) {
+        String decoratedMethodName = 'decorated$' + methodName
+        def trace = exception.stackTrace.find { it.methodName == decoratedMethodName }
+
+        printer.print("!> ${exception.class.simpleName}('${exception.message}') at ${trace.fileName}:${trace.lineNumber}")
     }
 }

@@ -22,7 +22,7 @@ import groovy.transform.ToString
  * @author ceilfors
  */
 @ToString
-class MethodInfo {
+class MethodInfo implements Printable {
 
     String name
     List<Object> args
@@ -30,5 +30,18 @@ class MethodInfo {
     MethodInfo(String name, List<Object> args) {
         this.name = name
         this.args = args
+    }
+
+    @Override
+    void printTo(CodeFlowPrinter printer) {
+        printer.print(name)
+        printer.print('(')
+        args.eachWithIndex { Object arg, i ->
+            if (i != 0) {
+                printer.print(', ')
+            }
+            printer.printValue(arg)
+        }
+        printer.print(')')
     }
 }

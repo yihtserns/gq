@@ -19,7 +19,7 @@ package com.ceilfors.transform.gq
 /**
  * @author ceilfors
  */
-class ExpressionInfo {
+class ExpressionInfo implements Printable {
 
     String methodName
     String text
@@ -29,5 +29,11 @@ class ExpressionInfo {
         this.methodName = methodName
         this.text = text
         this.value = value
+    }
+
+    @Override
+    void printTo(CodeFlowPrinter printer) {
+        printer.print("${methodName}: ${text.replace("\n", "")}=")
+        printer.printValue(value)
     }
 }

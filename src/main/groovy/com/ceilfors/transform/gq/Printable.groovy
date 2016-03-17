@@ -14,24 +14,12 @@
  * limitations under the License.
  */
 
-package com.ceilfors.transform.gq
+package com.ceilfors.transform.gq;
 
 /**
  * @author ceilfors
  */
-interface CodeFlowPrinter {
+public interface Printable {
 
-    void printMethodStart(MethodInfo methodInfo)
-
-    void printMethodEnd()
-
-    void printMethodEnd(Object result)
-
-    void printExpression(ExpressionInfo expressionInfo)
-
-    void print(String string)
-
-    void printValue(Object value)
-
-    void printException(ExceptionInfo exceptionInfo)
+    void printTo(CodeFlowPrinter printer)
 }

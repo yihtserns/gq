@@ -60,6 +60,11 @@ class IndentingCodeFlowPrinter implements CodeFlowPrinter {
     }
 
     @Override
+    void printValue(Object value) {
+        out.printValue(value)
+    }
+
+    @Override
     void printException(ExceptionInfo exceptionInfo) {
         indentLevel--
         indent()

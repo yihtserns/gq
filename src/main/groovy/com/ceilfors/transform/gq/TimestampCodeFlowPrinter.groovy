@@ -64,6 +64,11 @@ class TimestampCodeFlowPrinter implements CodeFlowPrinter {
     }
 
     @Override
+    void printValue(Object value) {
+        out.printValue(value)
+    }
+
+    @Override
     void printException(ExceptionInfo exceptionInfo) {
         writeTimestamp()
         out.printException(exceptionInfo)
